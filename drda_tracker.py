@@ -87,12 +87,16 @@ with st.sidebar:
         scheme = st.selectbox("योजना / विषय", ["पंतप्रधान आवास", "रमाई आवास", "शबरी आवास", "मनरेगा", "ग्रामपंचायत", "इतर"])
         priority = st.radio("प्राधान्यक्रम", ["🔴 अतितातडीचे (VIP)", "🟡 तातडीचे", "🟢 सामान्य"])
         panchayat_samiti = st.selectbox("पंचायत समिती", ["जळगाव", "अमळनेर", "पाचोरा", "भडगाव", "मुक्ताईनगर", "धरणगाव", "चोपडा", "बोदवड", "यावल", "रावेर", "पारोळा", "चाळीसगाव", "जामनेर", "एरंडोल", "भडगाव"])
+        
+        # नवीन रकाना: पत्र पाठवल्याची तारीख (बाय डिफॉल्ट आजची तारीख असेल, पण बदलता येईल)
+        sent_date = st.date_input("पत्र पाठवल्याची तारीख", value=datetime.now().date())
+        
         deadline_days = st.number_input("मुदत (दिवस)", min_value=1, max_value=30, value=7)
         submit_button = st.form_submit_button("नोंद करा (Submit)")
         
         if submit_button and applicant_name:
             token_id = generate_token(df)
-            sent_date = datetime.now().date()
+            # अंतिम तारीख आता तुम्ही निवडलेल्या तारखेवरून मोजली जाईल
             deadline_date = sent_date + timedelta(days=deadline_days)
             new_data = pd.DataFrame([{
                 "टोकन क्रमांक": token_id,
